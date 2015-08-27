@@ -19,3 +19,6 @@ Similarly, you can provide multiple (up to 10) passwords, like the following:
     generate_passwordcard.py passw0rd 0 0 4n0th3r 3 5
 
 ![Password Card including user provided passwords](images/passwordcard3.png)
+
+
+Please make sure to use passwords that have high entropy, otherwise anybody can spot them in the random background...
