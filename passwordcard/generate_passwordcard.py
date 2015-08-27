@@ -41,7 +41,6 @@ def main():
             row = int(args.pop(0))
             column = int(args.pop(0))
             passwords[password] = (row, column)
-    print passwords
     line_height = 20
     letterwidth = 14
     attribs_header = {'font-family':'URW Palladio L', 'font-size':16, 'text-anchor':'start', 'class':'monofont'}
