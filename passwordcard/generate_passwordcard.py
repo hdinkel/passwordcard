@@ -31,7 +31,8 @@ import io
 
 def main():
 
-    svg_file = io.open('passwordcard.svg', 'w', encoding='utf-8')
+    PASSWORDCARDNAME = 'passwordcard.svg'
+    svg_file = io.open(PASSWORDCARDNAME, 'w', encoding='utf-8')
     dwg = svgwrite.Drawing(profile='tiny')
     passwords = {}
     if len(args) > 0:
@@ -41,19 +42,22 @@ def main():
             row = int(args.pop(0))
             column = int(args.pop(0))
             passwords[password] = (row, column)
-    line_height = 20
-    letterwidth = 14
-    attribs_header = {'font-family':'URW Palladio L', 'font-size':16, 'text-anchor':'start', 'class':'monofont'}
-    attribs_main = {'font-family':'Nimbus Mono L', 'font-size':16, 'text-anchor':'start', 'class':'monofont'}
+    line_height = 18
+    letterwidth = 10
+    boxlength = 10
+    attribs_header = {'font-family':'URW Palladio L', 'font-size':14, 'text-anchor':'start', 'class':'monofont'}
+    attribs_main = {'font-family':'Nimbus Mono L', 'font-size':14, 'text-anchor':'start', 'class':'monofont'}
 
-    header_row = list(u'■□▲△○●★☂☀☁☹☺♠♣♥♦♫€¥£$!?¡¿⊙◐◩�')
+#   header_row = list(u'■□▲△○●★☂☀☁☹☺♠♣♥♦♫€¥£$!?¡¿⊙◐◩�')
+#   header_row = list(u'♔♕□△○★☔☀☁☹☺♠♣♥♦♫€$☏☑☒☣?♀♂♲⚡⚕⚖')
+    header_row = list(u'♔♕⚅△○★☔☀☁☹☺♠♣♥♦♫€$☏☑☒☣?♀♂♲⚡⚕⚐')
     if options.shuffle_header:
         random.shuffle(header_row)
     header_row = ''.join(header_row)
     characters = list(string.punctuation + string.lowercase + string.letters + string.lowercase + string.digits + string.letters + string.lowercase)
 
     for j, letter in enumerate(header_row):  # Need to convert to list so we can replace letters
-        mytext = dwg.text(letter, insert=(j*letterwidth+1, line_height-4), fill='black')
+        mytext = dwg.text(letter, insert=(j*letterwidth, line_height-4), fill='black')
         mytext.update(attribs_header)
         dwg.add(mytext)
 
@@ -77,14 +81,15 @@ def main():
                     text[j+column] = letter
                 text = ''.join(text)
 #        index = random.choice(range(0, len(text) - len(password)))
-        dwg.add(dwg.rect((1, (i+1)*line_height), (max_len*14, line_height), fill=colors[i]))
+        dwg.add(dwg.rect((0, (i+1)*line_height), (max_len*boxlength, line_height), fill=colors[i]))
         for j, letter in enumerate(text):  # Need to convert to list so we can replace letters
-            mytext = dwg.text(letter, insert=(j*letterwidth+1, (i+2)*line_height-4), fill='black')
+            mytext = dwg.text(letter, insert=(j*letterwidth, (i+2)*line_height-4), fill='black')
             mytext.update(attribs_main)
             dwg.add(mytext)
 
     dwg.write(svg_file)
     svg_file.close()
+    print "Your PasswordCard has been created as '%s'" % PASSWORDCARDNAME
 
 if __name__ == '__main__':
     try:
