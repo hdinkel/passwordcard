@@ -33,7 +33,7 @@ def main():
 
     PASSWORDCARDNAME = 'passwordcard.svg'
     svg_file = io.open(PASSWORDCARDNAME, 'w', encoding='utf-8')
-    dwg = svgwrite.Drawing(profile='tiny')
+    dwg = svgwrite.Drawing(profile='tiny', size=('1024','800'))
     passwords = {}
     if len(args) > 0:
         assert len(args) % 3 == 0, "When providing passwords, you also need to provide a column and row for each password!"
