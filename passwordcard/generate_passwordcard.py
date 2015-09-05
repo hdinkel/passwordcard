@@ -33,8 +33,11 @@ import io
 def main():
 
     PASSWORDCARDNAME = 'passwordcard.svg'
+    WIDTH, HEIGHT = 1024, 800
+    GRID_COLOR = '#666666'
+
     svg_file = io.open(PASSWORDCARDNAME, 'w', encoding='utf-8')
-    dwg = svgwrite.Drawing(profile='tiny', size=('1024', '800'))
+    dwg = svgwrite.Drawing(profile='tiny', size=(str(WIDTH), str(HEIGHT)))
     passwords = {}
     if len(args) > 0:
         assert len(args) % 3 == 0, "When providing passwords, you also need to provide a column and row for each password!"
@@ -47,26 +50,31 @@ def main():
     letterwidth = 10
     boxlength = 10
 #    attribs_header = {'font-family':'Lucida Sans', 'font-weight': '600', 'font-size':14, 'text-anchor':'start', 'class':'monofont'}
-    attribs_header = {'font-family': 'URW Palladio L', 'font-weight': '600', 'font-size': 14, 'text-anchor': 'start', 'class': 'monofont'}
-    attribs_main = {'font-family': 'Nimbus Mono L', 'font-size': 16, 'text-anchor': 'start', 'class': 'monofont'}
+    attribs_header = {'font-family': 'URW Palladio L', 'font-weight': '600', 'font-size': 10, 'text-anchor': 'start', 'class': 'monofont'}
+#    attribs_main = {'font-family': 'Nimbus Mono L', 'font-size': 16, 'text-anchor': 'start', 'class': 'monofont'}
+    attribs_main = {'font-family': 'monospace', 'font-size': 14, 'text-anchor': 'start', 'class': 'monofont'}
+
 
 #   header_row = list(u'■□▲△○●★☂☀☁☹☺♠♣♥♦♫€¥£$!?¡¿⊙◐◩�')
 #   header_row = list(u'♔♕□△○★☔☀☁☹☺♠♣♥♦♫€$☏☑☒☣?♀♂♲⚡⚕⚖')
     header_row = list(u'♔♕⚅△○★☔☀☁☹☺♠♣♥♦♫€$☏☑☒☣?♀♂♲⚡⚕⚐')
+
     if options.shuffle_header:
         random.shuffle(header_row)
     header_row = ''.join(header_row)
     characters = list(string.punctuation + string.lowercase + string.letters + string.lowercase + string.digits + string.letters + string.lowercase)
 
-    for j, letter in enumerate(header_row):  # Need to convert to list so we can replace letters
-        mytext = dwg.text(letter, insert=(j*letterwidth, line_height-4), fill='black')
-        mytext.update(attribs_header)
-        dwg.add(mytext)
-
     max_len = len(header_row)
     colors = ('#7FCAFF', '#7F97FF', '#E77FFF', '#FF7FB0', '#FF9C7E', '#FFBD7E', '#FFF17E', '#CAF562', '#62F5C8', '#7FCAFF')
 
     assert len(passwords.keys()) <= len(colors), "Too many passwords. Max: %s" % len(colors)
+
+    group = dwg.add(dwg.g(transform='translate(5,2)'))
+
+    for j, letter in enumerate(header_row):  # Need to convert to list so we can replace letters
+        mytext = dwg.text(letter, insert=(j*letterwidth, line_height-4), fill='black')
+        mytext.update(attribs_header)
+        group.add(mytext)
 
 #    for i in range(len(colors) - len(passwords)):
 #        passwords.append('')
@@ -83,12 +91,20 @@ def main():
                     text[j+column] = letter
                 text = ''.join(text)
 #        index = random.choice(range(0, len(text) - len(password)))
-        dwg.add(dwg.rect((0, (i+1)*line_height), (max_len*boxlength, line_height), fill=colors[i]))
+        group.add(dwg.rect((-3, (i+1)*line_height), (max_len*boxlength+5, line_height), fill=colors[i]))
+        group.add(dwg.line((-3, (i+1)*line_height), (max_len*boxlength+3, (i+1)*line_height), stroke=GRID_COLOR, stroke_width='0.1'))
         for j, letter in enumerate(text):  # Need to convert to list so we can replace letters
             mytext = dwg.text(letter, insert=(j*letterwidth, (i+2)*line_height-4), fill='black')
             mytext.update(attribs_main)
-            dwg.add(mytext)
+            group.add(mytext)
+    for i in range(1, len(header_row)):
+        group.add(dwg.line((i*letterwidth, 0), (i*letterwidth, line_height*(len(colors)+1)), stroke=GRID_COLOR, stroke_width='0.1'))
 
+    myborder = dwg.rect(insert=(2, 2), size=(letterwidth * 1.02 * len(header_row), (len(colors)+1) * line_height * 1.0), rx=2, ry=2, fill='white', stroke='black')
+    myborder.fill(opacity='0.0')
+    dwg.add(myborder)
+
+#    dwg.add(dwg.line(start=(0, 0), end=(100, 100), fill='black', stroke='black'))
     dwg.write(svg_file)
     svg_file.close()
     print "Your PasswordCard has been created as '%s'" % PASSWORDCARDNAME
