@@ -45,7 +45,8 @@ def main():
     line_height = 18
     letterwidth = 10
     boxlength = 10
-    attribs_header = {'font-family':'URW Palladio L', 'font-size':14, 'text-anchor':'start', 'class':'monofont'}
+#    attribs_header = {'font-family':'Lucida Sans', 'font-weight': '600', 'font-size':14, 'text-anchor':'start', 'class':'monofont'}
+    attribs_header = {'font-family':'URW Palladio L', 'font-weight': '600', 'font-size':14, 'text-anchor':'start', 'class':'monofont'}
     attribs_main = {'font-family':'Nimbus Mono L', 'font-size':14, 'text-anchor':'start', 'class':'monofont'}
 
 #   header_row = list(u'■□▲△○●★☂☀☁☹☺♠♣♥♦♫€¥£$!?¡¿⊙◐◩�')
