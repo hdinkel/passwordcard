@@ -10,7 +10,7 @@ DESCRIPTION
 
 EXAMPLES
 
-    python generate_passwordcard.py 
+    python generate_passwordcard.py
     python generate_passwordcard.py mySecr33t 2 4
     python generate_passwordcard.py passw0rd 0 0 4n0th3r 3 5
 
@@ -19,7 +19,7 @@ AUTHOR
     Holger Dinkel <dinkel@embl.de>
 
 """
-VERSION='0.3'
+VERSION = '0.3'
 
 
 import sys
@@ -29,11 +29,12 @@ import string
 import svgwrite
 import io
 
+
 def main():
 
     PASSWORDCARDNAME = 'passwordcard.svg'
     svg_file = io.open(PASSWORDCARDNAME, 'w', encoding='utf-8')
-    dwg = svgwrite.Drawing(profile='tiny', size=('1024','800'))
+    dwg = svgwrite.Drawing(profile='tiny', size=('1024', '800'))
     passwords = {}
     if len(args) > 0:
         assert len(args) % 3 == 0, "When providing passwords, you also need to provide a column and row for each password!"
@@ -46,8 +47,8 @@ def main():
     letterwidth = 10
     boxlength = 10
 #    attribs_header = {'font-family':'Lucida Sans', 'font-weight': '600', 'font-size':14, 'text-anchor':'start', 'class':'monofont'}
-    attribs_header = {'font-family':'URW Palladio L', 'font-weight': '600', 'font-size':14, 'text-anchor':'start', 'class':'monofont'}
-    attribs_main = {'font-family':'Nimbus Mono L', 'font-size':14, 'text-anchor':'start', 'class':'monofont'}
+    attribs_header = {'font-family': 'URW Palladio L', 'font-weight': '600', 'font-size': 14, 'text-anchor': 'start', 'class': 'monofont'}
+    attribs_main = {'font-family': 'Nimbus Mono L', 'font-size': 16, 'text-anchor': 'start', 'class': 'monofont'}
 
 #   header_row = list(u'■□▲△○●★☂☀☁☹☺♠♣♥♦♫€¥£$!?¡¿⊙◐◩�')
 #   header_row = list(u'♔♕□△○★☔☀☁☹☺♠♣♥♦♫€$☏☑☒☣?♀♂♲⚡⚕⚖')
@@ -95,7 +96,7 @@ def main():
 if __name__ == '__main__':
     try:
         parser = optparse.OptionParser(formatter=optparse.TitledHelpFormatter(), usage=globals()['__doc__'], version=VERSION)
-        parser.add_option ('-v', '--verbose', action='store_true', default=False, help='verbose output')
+        parser.add_option('-v', '--verbose', action='store_true', default=False, help='verbose output')
         parser.add_option('-s', '--shuffle_header', action="store_true", dest='shuffle_header', default=False)
         (options, args) = parser.parse_args()
         main()
@@ -107,4 +108,3 @@ if __name__ == '__main__':
         print 'ERROR, UNEXPECTED EXCEPTION'
         print str(e)
         sys.exit(8)
-
