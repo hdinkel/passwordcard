@@ -35,6 +35,9 @@ def main():
     PASSWORDCARDNAME = 'passwordcard.svg'
     WIDTH, HEIGHT = 1024, 800
     GRID_COLOR = '#666666'
+    # TODO: find better way to seed randomness
+    if options.random_seed:
+        random.seed(options.random_seed)
 
     svg_file = io.open(PASSWORDCARDNAME, 'w', encoding='utf-8')
     dwg = svgwrite.Drawing(profile='tiny', size=(str(WIDTH), str(HEIGHT)))
@@ -114,6 +117,7 @@ if __name__ == '__main__':
         parser = optparse.OptionParser(formatter=optparse.TitledHelpFormatter(), usage=globals()['__doc__'], version=VERSION)
         parser.add_option('-v', '--verbose', action='store_true', default=False, help='verbose output')
         parser.add_option('-s', '--shuffle_header', action="store_true", dest='shuffle_header', default=False)
+        parser.add_option('-r', '--random_seed', action="store", dest='random_seed')
         (options, args) = parser.parse_args()
         main()
         sys.exit(0)
