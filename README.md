@@ -1,9 +1,16 @@
-Simple Passwordcard generator
+# passwordcard
 
-Heavily inspired by http://www.passwordcard.org
-however it lacked the feature to include existing user-generated passwords. So I created my own...
+A simple passwordcard generator, producing a SVG with random strings that can be used as passwords.
+The clue being that each line is colored differently and there are several different glyphs in the header row, 
+which makes remembering individual passwords as easy as finding easy.
+So instead of remembering a 8 or 12 letter combination, you just need to remember one glyph, one
+color (and the length of your password).
 
-Example output:
+This project was heavily inspired by http://www.passwordcard.org. However that tool lacked several
+features, such as the possibility to include existing user-provided passwords. Therefore I created
+my own passwordcard generator...
+
+## Example output and usage:
 
 ![Password Card](images/passwordcard.png)
 
@@ -21,4 +28,16 @@ Similarly, you can provide multiple (up to 10) passwords, like the following:
 ![Password Card including user provided passwords](images/passwordcard3.png)
 
 
-Please make sure to use passwords that have high entropy, otherwise anybody can spot them in the random background...
+## Closing remarks
+
+Passwordcards allow you to use strong passwords even without a digital password manager. Plus you
+need to have a password for your password manager, right? Now, where do you store that? In a
+passwordcard! They are also ideal as fallback solution for your most important passwords - print the
+passwordcard and put it in your wallet.
+
+However, keep in mind that there is a security/usability tradeoff here: passwordcards make it easier
+to use strong passwords, but they reduce security as an attacker who manages to find/steal your
+passwordcard, will have to bruteforce scan significantly less passwords...
+
+Also, please make sure to use passwords that have high entropy, otherwise anybody can spot them in
+the random background (see example pictures above: you can easily spot the word 'passw0rd'...
