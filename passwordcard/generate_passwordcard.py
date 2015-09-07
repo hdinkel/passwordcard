@@ -14,12 +14,15 @@ EXAMPLES
     python generate_passwordcard.py mySecr33t 2 4
     python generate_passwordcard.py passw0rd 0 0 4n0th3r 3 5
 
+    Use a seed (SEED) and one row of digits:
+        python generate_passwordcard.py -r SEED  -n 1
+
 AUTHOR
 
     Holger Dinkel <dinkel@embl.de>
 
 """
-VERSION = '0.3'
+VERSION = '0.4'
 
 
 import sys
@@ -35,9 +38,15 @@ def main():
     PASSWORDCARDNAME = 'passwordcard.svg'
     WIDTH, HEIGHT = 1024, 800
     GRID_COLOR = '#666666'
+
     # TODO: find better way to seed randomness
     if options.random_seed:
         random.seed(options.random_seed)
+
+    if options.digit_rows:
+        DIGIT_ROWS = int(options.digit_rows)
+    else:
+        DIGIT_ROWS = 0
 
     svg_file = io.open(PASSWORDCARDNAME, 'w', encoding='utf-8')
     dwg = svgwrite.Drawing(profile='tiny', size=(str(WIDTH), str(HEIGHT)))
@@ -64,6 +73,7 @@ def main():
         random.shuffle(header_row)
     header_row = ''.join(header_row)
     characters = list(string.punctuation + string.lowercase + string.letters + string.lowercase + string.digits + string.letters + string.lowercase)
+    digits = list(string.digits+string.digits+string.digits)
 
     max_len = len(header_row)
     colors = ('#7FCAFF', '#7F97FF', '#E77FFF', '#FF7FB0', '#FF9C7E', '#FFBD7E', '#FFF17E', '#CAF562', '#62F5C8', '#7FCAFF')
@@ -83,7 +93,11 @@ def main():
 
     for i in range(len(colors)):
         random.shuffle(characters)
-        text = ''.join(characters[:max_len])
+        if DIGIT_ROWS > 0:
+            text = ''.join(random.sample(digits, max_len))
+            DIGIT_ROWS -= 1
+        else:
+            text = ''.join(random.sample(characters, max_len))
         for password, pos in passwords.items():
             row, column = pos
             if row == i:
@@ -116,6 +130,7 @@ if __name__ == '__main__':
         parser.add_option('-v', '--verbose', action='store_true', default=False, help='verbose output')
         parser.add_option('-s', '--shuffle_header', action="store_true", dest='shuffle_header', default=False)
         parser.add_option('-r', '--random_seed', action="store", dest='random_seed')
+        parser.add_option('-n', '--numbers', action="store", dest='digit_rows', help='use this many lines of rows with digits')
         (options, args) = parser.parse_args()
         main()
         sys.exit(0)
