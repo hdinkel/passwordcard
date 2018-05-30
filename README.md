@@ -28,6 +28,14 @@ Similarly, you can provide multiple (up to 10) passwords, like the following:
 ![Password Card including user provided passwords](images/passwordcard3.png)
 
 
+You can define how many lines of numbers/digits you want using the ``-n`` switch:
+
+    generate_passwordcard.py -n 4 passw0rd 0 0 
+
+It is also possible to re-use a given random seed by using the ``-r`` switch:
+
+    generate_passwordcard.py -r MyRandomSeed
+
 ## Closing remarks
 
 Passwordcards allow you to use strong passwords even without a digital password manager. Plus you
